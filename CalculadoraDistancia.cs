@@ -16,7 +16,20 @@ public class CalculadorDistancia
         Comparacao = str2;
         Distance = LevenshteinDistance(str1, str2);
         Similiarity = JaccardSimilarity(str1, str2);
-        Possibility = JaccardLevenshteinCombined(str1, str2, threeshould);
+
+        var comparisonBetweenOneWord = (str1.Split(' ').Length == 1 && str2.Split(' ').Length == 1);
+
+        if (comparisonBetweenOneWord)
+        {
+            if (Distance <= threeshould) // Aqui usar com um grão de sal, se o threeshould deve dar 1, 0, ou fazer uma razão;
+                Possibility = (double)(str1.Length - Distance) / str1.Length;
+            else
+                Possibility = 0;
+        }
+        else
+        {
+            Possibility = JaccardLevenshteinCombined(str1, str2, threeshould);
+        }
     }
 
     public override string ToString()
@@ -24,7 +37,7 @@ public class CalculadorDistancia
         var sb = new StringBuilder();
         sb.AppendLine($"Distância de Levenshtein entre '{Base}' e '{Comparacao}' é: {Distance}");
         sb.AppendLine($"Similaridade de Jaccard: {Similiarity * 100}%");
-        sb.AppendLine($"Similaridade de Combinação: {Possibility * 100}%");
+        sb.AppendLine($"Possibilidade de Combinação: {Possibility * 100}%");
 
         return sb.ToString();
     }
@@ -117,7 +130,7 @@ public class CalculadorDistancia
         double levenshteinFactor = 1 - ((double)difference.Count / union.Count);
 
         //Console.WriteLine($"{s1} - {s2} - jaccard {jaccardSimilarity} - levveinstein {levenshteinFactor} = {(jaccardSimilarity + levenshteinFactor) / 2}");
-        
+
         return (jaccardSimilarity + levenshteinFactor) / 2;
     }
 }
