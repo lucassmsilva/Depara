@@ -35,9 +35,14 @@ public class CalculadorDistancia
     public override string ToString()
     {
         var sb = new StringBuilder();
+        sb.AppendLine("");
+        sb.AppendLine(@"-----------------------------CALCULADORA----------------------------------");
         sb.AppendLine($"Distância de Levenshtein entre '{Base}' e '{Comparacao}' é: {Distance}");
         sb.AppendLine($"Similaridade de Jaccard: {Similiarity * 100}%");
         sb.AppendLine($"Possibilidade de Combinação: {Possibility * 100}%");
+        sb.AppendLine(@"--------------------------------------------------------------------------");
+        sb.AppendLine("");
+
 
         return sb.ToString();
     }
@@ -128,8 +133,6 @@ public class CalculadorDistancia
 
         double jaccardSimilarity = (double)intersection.Count / union.Count;
         double levenshteinFactor = 1 - ((double)difference.Count / union.Count);
-
-        //Console.WriteLine($"{s1} - {s2} - jaccard {jaccardSimilarity} - levveinstein {levenshteinFactor} = {(jaccardSimilarity + levenshteinFactor) / 2}");
 
         return (jaccardSimilarity + levenshteinFactor) / 2;
     }
